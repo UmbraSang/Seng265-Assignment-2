@@ -1,7 +1,6 @@
 2
 ::
 the
-and
 any
 that
 to
@@ -9,6 +8,7 @@ it
 could
 was
 what
+and
 ::
 What was there lacking about that program to make it perfectly
 irresistible Nothing that any finite mind could discover Paris
