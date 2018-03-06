@@ -13,9 +13,10 @@ def main():
 	finalList = list()
 	caps = {}
 	refineLists(keys, capitals, caps)
+	print(caps.items())
+	print()
 	sortDict(caps, finalList)
 	finalFormat(caps, finalList)
-	#printTest(finalList)
 
 	
 def buildLists(keys, phrases, capitals):
@@ -25,7 +26,6 @@ def buildLists(keys, phrases, capitals):
 	phraseStart=allFile[2:].index("::")+2
 	for x in allFile[2:phraseStart]:
 		keys.append(x)
-	#printTest(keys)
 	for x in allFile[phraseStart+1:]:
 		phrases.append(x)
 	for x in phrases:
@@ -38,6 +38,7 @@ def refineLists(keys, capitals, caps):
 	for phraseLine in capitals:
 		for phraseWord in phraseLine:
 			if(checks(phraseWord.lower(), keys)):
+				temp2 = phraseWord
 				temp = phraseWord.upper()
 				phraseLine[:] = [temp if m==phraseWord else m for m in phraseLine]
 				finalPhrase = " ".join(phraseWord for phraseWord in phraseLine)
@@ -46,10 +47,9 @@ def refineLists(keys, capitals, caps):
 					caps[temp].extend(listIt)
 				else:
 					caps[temp] = listIt
-				temp2 = phraseWord.lower()
 				phraseLine[:] = [temp2 if m==temp else m for m in phraseLine]
 				listIt = []
-
+			#print(caps.get(phraseWord.upper()))
 				
 def checks(y, keys):
 	for z in keys:
@@ -73,12 +73,17 @@ def finalFormat(caps, finalList):
 	cutList = list()
 	for part in finalList:
 		for sentance in part:
-			#print("sentance: " + sentance)
 			for letter in sentance:
-				#print("letter: " + letter)
+				#print("HI")
+				#print(caps.get(letter))
 				if(letter in numDone):
 					continue
 				else:
+					#
+					#
+					#change to comprehension that checks the whole word? instead of just the characters?
+					#
+					#
 					if(letter.isupper() or letter.isdigit()):
 						if(sentance[sentance.index(letter)+1].isupper() or sentance[sentance.index(letter)].isdigit()):
 							count = sentance.index(letter)
@@ -88,64 +93,28 @@ def finalFormat(caps, finalList):
 									if(i == ' '):
 										numDone.append("")
 										break
+							#print("count: "),
+							#print(count)
 							if(count>20):
 								cutList.append(9*" "+sentance[count-20:count+31])
 								
 								start = sentance.find(" ", count-21)
-								end = sentance.rfind(" ", count+32)
-								if len(sentance) > 31:
-									print(" "*(29-count+start)+sentance[start:])
-								else:
+								end = sentance.rfind(" ", 0, count+32)
+								if len(sentance)-count > 31:
 									print(" "*(29-count+start)+sentance[start:end])
+								else:
+									print(" "*(29-count+start)+sentance[start:])
 							else:
 								spaces = 29-count
-								end = sentance[:count+32].rfind(" ")
-								if len(sentance) > 31:
+								end = sentance.rfind(" ", 0, count+32)
+								#print("spaces; "),
+								#print(spaces)
+								if len(sentance)-count > 31:
 									print(spaces*" " + sentance[:end])
 								else:
 									print(spaces*" " + sentance[:])
 							break
 						count = count+1
-	
-	
-	
-	
-	#printTest(cutList)
-	print()
-	#finalPrint(cutList)
-	
-	
-def finalPrint(cutList):
-#	for sentance in cutList:
-#		if(sentance[0]!=' '):
-#			start = sentance[:].find(" ")
-#			sentance = ' '*(start)+sentance[start:]
-#		else:
-#			sentance = sentance[1:]
-#		if(sentance[len(sentance)-1]!=' '):
-#			end = sentance[:].rfind(" ")
-#			sentance = sentance[:end]
-#		else:
-#			sentance = sentance[:len(sentance)-1]
-#	printTest(cutList)
-
-
-	pleaseWork = list()
-	for sentance in cutList:
-		if(sentance[0]!=' '):
-			start = sentance[:].find(" ")
-			pleaseWork.append(' '*(start)+sentance[start+1:])
-		else:
-			pleaseWork.append(sentance[1:])
-	pleaseWork2 = list()
-	for sentance in pleaseWork:
-		if(sentance[len(sentance)-1]!=' '):
-			end = sentance[:].rfind(" ")
-			pleaseWork2.append(sentance[:end])
-		else:
-			pleaseWork2.append(sentance[:len(sentance)-2])
-	printTest(pleaseWork2)		
-	
 	
 def printTest(array):
 	for x in array:
